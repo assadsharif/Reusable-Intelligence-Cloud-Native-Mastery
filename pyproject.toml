@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "file-driven-control-plane"
+name = "reusable-intelligence-cloud-native"
 version = "0.1.0"
-description = "File-driven state machine for Digital FTE task workflow management"
+description = "Reusable Intelligence & Cloud-Native Mastery — Spec-driven AI tooling with cloud-native deployment"
 requires-python = ">=3.11"
 dependencies = [
     "duckdb>=0.9.0",
@@ -70,7 +70,7 @@ addopts = [
 ]
 
 [tool.coverage.run]
-source = ["src/control_plane"]
+source = ["src"]
 branch = true
 omit = [
     "*/tests/*",

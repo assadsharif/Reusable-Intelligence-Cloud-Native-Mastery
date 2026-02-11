@@ -5,7 +5,7 @@ This project uses **Spec-Driven Development (SDD)** — a workflow where **no ag
 write code until the specification is complete and approved**.
 All AI agents (Claude, Copilot, Gemini, local LLMs, etc.) must follow the **Spec-Kit lifecycle**:
 > **Specify → Plan → Tasks → Implement**
-This prevents “vibe coding,” ensures alignment across agents, and guarantees that every
+This prevents "vibe coding," ensures alignment across agents, and guarantees that every
 implementation step maps back to an explicit requirement.
 ---
 ## **How Agents Must Work**
@@ -13,21 +13,19 @@ Every agent in this project MUST obey these rules:
 1. **Never generate code without a referenced Task ID.**
 2. **Never modify architecture without updating `speckit.plan`.**
 3. **Never propose features without updating `speckit.specify` (WHAT).**
-Page 41 of 47
-Hackathon II: Spec-Driven Development
 4. **Never change approach without updating `speckit.constitution` (Principles).**
 5. **Every code file must contain a comment linking it to the Task and Spec sections.**
 If an agent cannot find the required spec, it must **stop and request it**, not improvise.
 ---
 ## **Spec-Kit Workflow (Source of Truth)**
 ### **1. Constitution (WHY — Principles & Constraints)**
-File: `speckit.constitution`
-Defines the project’s non-negotiables: architecture values, security rules, tech stack constraints,
+File: `.specify/memory/constitution.md`
+Defines the project's non-negotiables: architecture values, security rules, tech stack constraints,
 performance expectations, and patterns allowed.
 Agents must check this before proposing solutions.
 ---
 ### **2. Specify (WHAT — Requirements, Journeys & Acceptance Criteria)**
-File: `speckit.specify`
+File: `specs/<feature>/spec.md`
 Contains:
 * User journeys
 * Requirements
@@ -38,19 +36,17 @@ Agents must not infer missing requirements — they must request clarification o
 specification updates.
 ---
 ### **3. Plan (HOW — Architecture, Components, Interfaces)**
-File: `speckit.plan`
+File: `specs/<feature>/plan.md`
 Includes:
 * Component breakdown
 * APIs & schema diagrams
 * Service boundaries
 * System responsibilities
 * High-level sequencing
-Page 42 of 47
-Hackathon II: Spec-Driven Development
 All architectural output MUST be generated from the Specify file.
 ---
 ### **4. Tasks (BREAKDOWN — Atomic, Testable Work Units)**
-File: `speckit.tasks`
+File: `specs/<feature>/tasks.md`
 Each Task must contain:
 * Task ID
 * Clear description
@@ -73,24 +69,22 @@ Agents now write code, but must:
 Agents must reference:
 ```
 [Task]: T-001
-[From]: speckit.specify §2.1, speckit.plan §3.4
+[From]: specs/<feature>/spec.md §2.1, specs/<feature>/plan.md §3.4
 ```
 ### **When proposing architecture:**
 Agents must reference:
-Page 43 of 47
-Hackathon II: Spec-Driven Development
 ```
-Update required in speckit.plan → add component X
+Update required in specs/<feature>/plan.md → add component X
 ```
 ### **When proposing new behavior or a new feature:**
 Agents must reference:
 ```
-Requires update in speckit.specify (WHAT)
+Requires update in specs/<feature>/spec.md (WHAT)
 ```
 ### **When changing principles:**
 Agents must reference:
 ```
-Modify constitution.md → Principle #X
+Modify .specify/memory/constitution.md → Principle #X
 ```
 ---
 ## **Agent Failure Modes (What Agents MUST Avoid)**
@@ -99,9 +93,9 @@ Agents are NOT allowed to:
 * Generate missing requirements
 * Create tasks on their own
 * Alter stack choices without justification
-* Add endpoints, fields, or flows that aren’t in the spec
+* Add endpoints, fields, or flows that aren't in the spec
 * Ignore acceptance criteria
-* Produce “creative” implementations that violate the plan
+* Produce "creative" implementations that violate the plan
 If a conflict arises between spec files, the **Constitution > Specify > Plan > Tasks** hierarchy
 applies.
 ---
