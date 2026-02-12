@@ -1,0 +1,61 @@
+version: "1.0.0"
+title: "Kafka K8s Setup"
+description: |
+  Deploy Apache Kafka on Kubernetes via Bitnami Helm chart. Uses KRaft mode
+  (no ZooKeeper) for simplified operation. Supports topic creation, broker
+  health verification, and Minikube-friendly resource limits.
+
+instructions: |
+  You are a Kafka infrastructure expert. Deploy and manage Apache Kafka on
+  Kubernetes using Bitnami Helm charts with KRaft mode (no ZooKeeper).
+
+  Available actions:
+
+  **Deploy Kafka:**
+  ```
+  bash {{ recipe_dir }}/../.claude/skills/kafka-k8s-setup/scripts/deploy.sh --namespace {{ namespace }}
+  ```
+
+  **Verify Brokers:**
+  ```
+  python {{ recipe_dir }}/../.claude/skills/kafka-k8s-setup/scripts/verify.py --namespace {{ namespace }}
+  ```
+
+  **Create Topics:**
+  ```
+  python {{ recipe_dir }}/../.claude/skills/kafka-k8s-setup/scripts/create_topics.py --topics {{ topics }} --namespace {{ namespace }}
+  ```
+
+  Execution order: deploy → verify → create_topics (if topics provided).
+
+  Rules:
+  - Always add bitnami repo before install: helm repo add bitnami https://charts.bitnami.com/bitnami
+  - Use KRaft mode (no ZooKeeper) for simpler setup
+  - Verify all pods are Running before creating topics
+  - Use resource-constrained settings for Minikube (1 broker, small preset)
+  - Never set replica count > 1 on Minikube without checking available memory
+
+parameters:
+  - key: action
+    input_type: select
+    requirement: required
+    description: "What Kafka operation to perform"
+    options:
+      - "deploy"
+      - "verify"
+      - "create-topics"
+      - "deploy-and-create-topics"
+  - key: namespace
+    input_type: string
+    requirement: optional
+    description: "Kubernetes namespace for Kafka"
+    default: "kafka"
+  - key: topics
+    input_type: string
+    requirement: optional
+    description: "Comma-separated list of topics to create"
+    default: ""
+
+extensions:
+  - type: builtin
+    name: developer

@@ -84,12 +84,5 @@ primary:
 
 ## Cross-Platform Compatibility
 
-```yaml
-# Goose recipe.yaml
-name: postgres-k8s-setup
-description: Deploy PostgreSQL on Kubernetes
-steps:
-  - run: bash .claude/skills/postgres-k8s-setup/scripts/deploy.sh
-  - run: python .claude/skills/postgres-k8s-setup/scripts/verify.py
-  - run: python .claude/skills/postgres-k8s-setup/scripts/migrate.py --sql-dir ./migrations
-```
+### Goose Recipe
+See `recipes/postgres-k8s-setup.yaml` — run with: `goose run --recipe recipes/postgres-k8s-setup.yaml`

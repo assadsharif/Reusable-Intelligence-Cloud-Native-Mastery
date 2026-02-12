@@ -71,10 +71,5 @@ This skill works on:
 - **OpenAI Codex** — same pattern (reads SKILL.md, executes scripts)
 - **Goose** — via equivalent recipe.yaml (see below)
 
-### Goose Recipe (recipe.yaml)
-```yaml
-name: agents-md-gen
-description: Generate AGENTS.md for a repository
-steps:
-  - run: python .claude/skills/agents-md-gen/scripts/generate_agents_md.py --repo-path .
-```
+### Goose Recipe
+See `recipes/agents-md-gen.yaml` — run with: `goose run --recipe recipes/agents-md-gen.yaml`

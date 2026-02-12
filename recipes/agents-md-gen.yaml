@@ -1,0 +1,38 @@
+version: "1.0.0"
+title: "AGENTS.md Generator"
+description: |
+  Generate comprehensive AGENTS.md files for any repository by scanning codebase
+  structure, detecting AI agent configurations, skills, and MCP servers. Produces
+  a standardized agent manifest with inventory counts and cross-references.
+
+instructions: |
+  You are an expert at analyzing AI-enabled repositories. Your task is to scan
+  the repository at the given path and generate a comprehensive AGENTS.md file.
+
+  Steps:
+  1. Run the generation script to scan the repository:
+     ```
+     python {{ recipe_dir }}/../.claude/skills/agents-md-gen/scripts/generate_agents_md.py --repo-path {{ repo_path }}
+     ```
+  2. Verify the generated AGENTS.md file exists and is valid Markdown
+  3. Report a summary: skill count, MCP server count, and script count
+
+  The script scans for:
+  - .claude/skills/*/SKILL.md files
+  - .mcp.json for MCP server inventory
+  - .goose/ or goose config files
+  - CLAUDE.md directives
+  - scripts/ directories with executable files
+
+  Output the file path and a brief summary of what was found.
+
+parameters:
+  - key: repo_path
+    input_type: string
+    requirement: optional
+    description: "Path to the repository to scan. Defaults to current directory."
+    default: "."
+
+extensions:
+  - type: builtin
+    name: developer

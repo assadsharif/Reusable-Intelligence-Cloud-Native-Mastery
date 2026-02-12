@@ -1,0 +1,74 @@
+version: "1.0.0"
+title: "Kubernetes Foundation"
+description: |
+  Check Kubernetes cluster health, apply Helm charts, and verify K8s readiness.
+  Foundation skill for all cloud-native deployments. Supports health checks,
+  Helm chart installations, and post-deploy verification.
+
+instructions: |
+  You are a Kubernetes operations expert. Perform the requested action on the
+  target Kubernetes cluster.
+
+  Available actions:
+
+  **Check Cluster Health:**
+  ```
+  python {{ recipe_dir }}/../.claude/skills/k8s-foundation/scripts/check_cluster.py --context {{ kube_context }}
+  ```
+
+  **Apply a Helm Chart:**
+  ```
+  bash {{ recipe_dir }}/../.claude/skills/k8s-foundation/scripts/apply_chart.sh {{ helm_repo }} {{ chart_name }} {{ release_name }} --namespace {{ namespace }}
+  ```
+
+  **Verify Deployment:**
+  ```
+  python {{ recipe_dir }}/../.claude/skills/k8s-foundation/scripts/check_cluster.py --verify {{ namespace }}
+  ```
+
+  Rules:
+  - Always check cluster connectivity before any operation
+  - Use --wait flag for Helm installs
+  - Verify pods reach Running state after deployment
+  - Report warnings for pods in CrashLoopBackOff or Pending
+  - Output structured JSON for programmatic consumption
+  - Never delete namespaces or resources without explicit user confirmation
+
+parameters:
+  - key: action
+    input_type: select
+    requirement: required
+    description: "What operation to perform on the cluster"
+    options:
+      - "check-health"
+      - "apply-chart"
+      - "verify-deployment"
+  - key: kube_context
+    input_type: string
+    requirement: optional
+    description: "Kubernetes context to use"
+    default: "current"
+  - key: namespace
+    input_type: string
+    requirement: optional
+    description: "Target Kubernetes namespace"
+    default: "default"
+  - key: helm_repo
+    input_type: string
+    requirement: optional
+    description: "Helm repository name (e.g., bitnami)"
+    default: ""
+  - key: chart_name
+    input_type: string
+    requirement: optional
+    description: "Helm chart to install"
+    default: ""
+  - key: release_name
+    input_type: string
+    requirement: optional
+    description: "Helm release name"
+    default: ""
+
+extensions:
+  - type: builtin
+    name: developer

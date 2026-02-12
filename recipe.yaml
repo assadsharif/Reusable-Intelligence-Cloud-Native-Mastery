@@ -1,0 +1,77 @@
+version: "1.0.0"
+title: "Reusable Intelligence — Cloud-Native Skills"
+description: |
+  Master recipe for the Reusable Intelligence & Cloud-Native Mastery project.
+  Orchestrates 8 portable AI agent skills that deploy cloud-native applications
+  on Kubernetes using the MCP Code Execution pattern (95% context savings).
+
+  Each sub-recipe maps 1:1 to a Claude Code skill (.claude/skills/<name>/SKILL.md)
+  and references the same scripts/ directory — true cross-platform portability.
+
+instructions: |
+  You are an expert cloud-native developer with access to 8 reusable skills.
+  Each skill follows the MCP Code Execution pattern: SKILL.md tells you WHAT
+  to do, scripts/*.py does the actual work externally, and only the result
+  enters your context window.
+
+  Available skills (use the matching sub-recipe):
+
+  | Skill | Sub-Recipe | Purpose |
+  |-------|-----------|---------|
+  | agents-md-gen | agents_md | Generate AGENTS.md for any repo |
+  | k8s-foundation | k8s_check | Check cluster health, apply Helm charts |
+  | kafka-k8s-setup | kafka | Deploy Kafka on K8s (Bitnami/KRaft) |
+  | postgres-k8s-setup | postgres | Deploy PostgreSQL on K8s (Bitnami) |
+  | fastapi-dapr-agent | fastapi_dapr | Scaffold FastAPI + Dapr + Agents SDK |
+  | nextjs-k8s-deploy | nextjs_deploy | Build and deploy Next.js on K8s |
+  | mcp-code-execution | mcp_exec | Wrap MCP tools in executable scripts |
+  | docusaurus-deploy | docusaurus | Deploy Docusaurus docs on K8s |
+
+  When the user asks to perform a task, identify the matching skill and run
+  the corresponding sub-recipe. If a task spans multiple skills, run them
+  in dependency order.
+
+  Example: "Deploy the full LearnFlow stack" →
+  1. k8s_check (verify cluster health)
+  2. postgres (deploy database)
+  3. kafka (deploy message broker)
+  4. fastapi_dapr (scaffold backend)
+  5. nextjs_deploy (deploy frontend)
+  6. docusaurus (deploy docs)
+  7. agents_md (generate AGENTS.md)
+
+activities:
+  - "Deploy PostgreSQL on Kubernetes"
+  - "Scaffold a FastAPI + Dapr microservice"
+  - "Deploy Kafka message broker"
+  - "Build and deploy a Next.js frontend"
+
+sub_recipes:
+  - name: agents_md
+    path: ./recipes/agents-md-gen.yaml
+    description: "Generate AGENTS.md for any repository"
+  - name: k8s_check
+    path: ./recipes/k8s-foundation.yaml
+    description: "Check cluster health and apply Helm charts"
+  - name: kafka
+    path: ./recipes/kafka-k8s-setup.yaml
+    description: "Deploy Apache Kafka on Kubernetes"
+  - name: postgres
+    path: ./recipes/postgres-k8s-setup.yaml
+    description: "Deploy PostgreSQL on Kubernetes"
+  - name: fastapi_dapr
+    path: ./recipes/fastapi-dapr-agent.yaml
+    description: "Scaffold FastAPI + Dapr microservices"
+  - name: nextjs_deploy
+    path: ./recipes/nextjs-k8s-deploy.yaml
+    description: "Deploy Next.js apps on Kubernetes"
+  - name: mcp_exec
+    path: ./recipes/mcp-code-execution.yaml
+    description: "Wrap MCP tools in executable scripts"
+  - name: docusaurus
+    path: ./recipes/docusaurus-deploy.yaml
+    description: "Deploy Docusaurus docs on Kubernetes"
+
+extensions:
+  - type: builtin
+    name: developer

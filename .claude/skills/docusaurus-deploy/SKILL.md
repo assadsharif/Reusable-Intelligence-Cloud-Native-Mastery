@@ -79,11 +79,4 @@ This skill works on:
 - **Goose** -- via recipe.yaml
 
 ### Goose Recipe
-```yaml
-name: docusaurus-deploy
-description: Deploy Docusaurus documentation site on Kubernetes
-steps:
-  - run: bash .claude/skills/docusaurus-deploy/scripts/init_docs.sh --name my-docs --title "My Docs"
-  - run: bash .claude/skills/docusaurus-deploy/scripts/deploy.sh --name my-docs
-  - run: python .claude/skills/docusaurus-deploy/scripts/verify.py --name my-docs
-```
+See `recipes/docusaurus-deploy.yaml` — run with: `goose run --recipe recipes/docusaurus-deploy.yaml`

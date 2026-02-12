@@ -86,11 +86,5 @@ broker:
 
 ## Cross-Platform Compatibility
 
-```yaml
-# Goose recipe.yaml
-name: kafka-k8s-setup
-description: Deploy Kafka on Kubernetes
-steps:
-  - run: bash .claude/skills/kafka-k8s-setup/scripts/deploy.sh
-  - run: python .claude/skills/kafka-k8s-setup/scripts/verify.py
-```
+### Goose Recipe
+See `recipes/kafka-k8s-setup.yaml` — run with: `goose run --recipe recipes/kafka-k8s-setup.yaml`

@@ -1,0 +1,81 @@
+version: "1.0.0"
+title: "MCP Code Execution Pattern"
+description: |
+  The meta-pattern skill: wrap MCP server tool calls in executable scripts for
+  zero-context-token execution. Converts MCP tool definitions into the Skills +
+  Code Execution pattern (SKILL.md + scripts/*.py) and generates Goose recipes
+  for cross-platform compatibility. 95% context savings over direct MCP loading.
+
+instructions: |
+  You are the architect of the MCP Code Execution pattern — the core innovation
+  of the Reusable Intelligence project. This pattern wraps MCP server tool calls
+  in executable scripts so tools run externally and only results enter context.
+
+  The pattern:
+  ```
+  SKILL.md (~100 tokens) → scripts/*.py (executed, 0 tokens) → minimal result
+  ```
+
+  Available actions:
+
+  **Call any MCP tool:**
+  ```
+  python {{ recipe_dir }}/../.claude/skills/mcp-code-execution/scripts/mcp_client.py \
+    --server {{ server_name }} \
+    --tool {{ tool_name }} \
+    --args '{{ tool_args }}'
+  ```
+
+  **Convert an MCP server to a full skill:**
+  ```
+  python {{ recipe_dir }}/../.claude/skills/mcp-code-execution/scripts/convert_mcp_to_skill.py \
+    --server-name {{ server_name }} \
+    --output-dir {{ output_dir }}
+  ```
+
+  The conversion script:
+  1. Reads .mcp.json to resolve the server entry
+  2. Spawns the server and calls tools/list to discover all tools
+  3. Generates SKILL.md with frontmatter, scope, tool map
+  4. Creates scripts/mcp_client.py (universal client)
+  5. Creates wrapper scripts per tool
+  6. Creates recipe.yaml for Goose compatibility
+
+  Rules:
+  - Always read .mcp.json to resolve server config; never hardcode paths
+  - Use stdio transport for all MCP calls
+  - Return results as valid JSON to stdout
+  - Terminate spawned server processes after each call
+  - Generated SKILL.md files must have valid YAML frontmatter
+
+parameters:
+  - key: action
+    input_type: select
+    requirement: required
+    description: "What to do with MCP tools"
+    options:
+      - "call-tool"
+      - "convert-to-skill"
+  - key: server_name
+    input_type: string
+    requirement: required
+    description: "MCP server name (must match a key in .mcp.json)"
+  - key: tool_name
+    input_type: string
+    requirement: optional
+    description: "Specific MCP tool to call"
+    default: ""
+  - key: tool_args
+    input_type: string
+    requirement: optional
+    description: "JSON arguments for the MCP tool"
+    default: "{}"
+  - key: output_dir
+    input_type: string
+    requirement: optional
+    description: "Output directory for generated skill"
+    default: ".claude/skills/generated"
+
+extensions:
+  - type: builtin
+    name: developer

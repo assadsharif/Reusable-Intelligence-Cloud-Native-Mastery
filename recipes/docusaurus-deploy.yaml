@@ -1,0 +1,72 @@
+version: "1.0.0"
+title: "Docusaurus Deploy"
+description: |
+  Deploy Docusaurus documentation sites on Kubernetes. Scaffolds a new Docusaurus
+  project with the classic template, containerizes it with nginx:alpine, and
+  deploys to K8s with Deployment + Service manifests and health verification.
+
+instructions: |
+  You are a documentation infrastructure expert. Scaffold, containerize, and
+  deploy Docusaurus documentation sites on Kubernetes.
+
+  **Step 1 — Scaffold a new Docusaurus project:**
+  ```
+  bash {{ recipe_dir }}/../.claude/skills/docusaurus-deploy/scripts/init_docs.sh \
+    --name {{ project_name }} \
+    --title "{{ site_title }}" \
+    --output-dir {{ output_dir }}
+  ```
+
+  **Step 2 — Build and deploy to Kubernetes:**
+  ```
+  bash {{ recipe_dir }}/../.claude/skills/docusaurus-deploy/scripts/deploy.sh \
+    --name {{ project_name }} \
+    --namespace {{ namespace }} \
+    --port {{ port }}
+  ```
+
+  **Step 3 — Verify deployment health:**
+  ```
+  python {{ recipe_dir }}/../.claude/skills/docusaurus-deploy/scripts/verify.py \
+    --name {{ project_name }} \
+    --namespace {{ namespace }}
+  ```
+
+  Rules:
+  - Verify npx is available before scaffolding
+  - Use Docusaurus classic template for consistent structure
+  - Use nginx:alpine as the production image base
+  - Create namespace if it does not already exist
+  - Wait for rollout completion before reporting success
+  - Use Minikube Docker daemon for image builds (no registry push)
+  - Never modify user-authored documentation content
+  - Never install custom plugins without user consent
+
+parameters:
+  - key: project_name
+    input_type: string
+    requirement: required
+    description: "Project name (used for directory, Docker image, K8s resources)"
+  - key: site_title
+    input_type: string
+    requirement: required
+    description: "Display title for the Docusaurus site"
+  - key: namespace
+    input_type: string
+    requirement: optional
+    description: "Kubernetes namespace"
+    default: "docs"
+  - key: port
+    input_type: string
+    requirement: optional
+    description: "Container/service port"
+    default: "3000"
+  - key: output_dir
+    input_type: string
+    requirement: optional
+    description: "Where to scaffold the project"
+    default: "."
+
+extensions:
+  - type: builtin
+    name: developer

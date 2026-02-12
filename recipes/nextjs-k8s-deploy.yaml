@@ -1,0 +1,61 @@
+version: "1.0.0"
+title: "Next.js K8s Deploy"
+description: |
+  Build and deploy Next.js applications on Kubernetes via Minikube. Builds
+  Docker images using Minikube's Docker daemon, generates Helm charts, deploys
+  with health verification, and prints the access URL.
+
+instructions: |
+  You are a frontend deployment expert. Build and deploy a Next.js application
+  on Kubernetes using Minikube's Docker daemon and auto-generated Helm charts.
+
+  **Step 1 — Build and deploy:**
+  ```
+  bash {{ recipe_dir }}/../.claude/skills/nextjs-k8s-deploy/scripts/build_and_deploy.sh \
+    --app-name {{ app_name }} \
+    --image-tag {{ image_tag }} \
+    --namespace {{ namespace }} \
+    --port {{ port }}
+  ```
+
+  **Step 2 — Verify deployment:**
+  ```
+  python {{ recipe_dir }}/../.claude/skills/nextjs-k8s-deploy/scripts/verify.py \
+    --app-name {{ app_name }} \
+    --namespace {{ namespace }}
+  ```
+
+  Rules:
+  - Always use `eval $(minikube docker-env)` to build images inside Minikube
+  - Use the multi-stage Dockerfile from templates/ for production builds
+  - Use `helm upgrade --install --wait` for idempotent deployments
+  - Set imagePullPolicy: Never since images are local to Minikube
+  - Ensure Next.js project has output: 'standalone' in next.config.js
+  - Verify pods reach Running state after deployment
+  - Never push images to external registries
+  - Never modify the Next.js application source code
+
+parameters:
+  - key: app_name
+    input_type: string
+    requirement: required
+    description: "Application name (used for image, Helm release, and K8s labels)"
+  - key: image_tag
+    input_type: string
+    requirement: optional
+    description: "Docker image tag"
+    default: "latest"
+  - key: namespace
+    input_type: string
+    requirement: optional
+    description: "Target Kubernetes namespace"
+    default: "default"
+  - key: port
+    input_type: string
+    requirement: optional
+    description: "Next.js application port"
+    default: "3000"
+
+extensions:
+  - type: builtin
+    name: developer

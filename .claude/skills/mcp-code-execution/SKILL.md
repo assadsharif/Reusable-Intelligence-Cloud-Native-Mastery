@@ -140,18 +140,10 @@ The pattern works across AI agent platforms:
 | Goose | `recipe.yaml` | Recipe references same `scripts/` |
 | OpenAI Codex | `AGENTS.md` reference | Points to `scripts/` |
 
-### Goose Recipe Structure
+### Goose Recipe
+See `recipes/mcp-code-execution.yaml` — run with: `goose run --recipe recipes/mcp-code-execution.yaml`
 
-```yaml
-name: <skill-name>
-description: <what it does>
-steps:
-  - name: call-tool
-    command: python3 scripts/mcp_client.py --server <server> --tool <tool> --args '{}'
-    description: <step description>
-```
-
-The `convert_mcp_to_skill.py` script auto-generates the recipe.yaml.
+The `convert_mcp_to_skill.py` script auto-generates recipe.yaml files for converted skills.
 
 ---
 

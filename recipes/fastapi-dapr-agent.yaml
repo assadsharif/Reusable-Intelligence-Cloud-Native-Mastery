@@ -1,0 +1,67 @@
+version: "1.0.0"
+title: "FastAPI + Dapr Agent Scaffold"
+description: |
+  Scaffold FastAPI microservices wired with Dapr sidecars and OpenAI Agents SDK
+  agent definitions. Creates service structure, Dapr component configs (state store,
+  pub/sub), agent class files, Dockerfile, and requirements.
+
+instructions: |
+  You are an expert at scaffolding cloud-native microservices. Create a FastAPI
+  service with Dapr sidecar integration and OpenAI Agents SDK agent definitions.
+
+  **Step 1 — Scaffold the service:**
+  ```
+  python {{ recipe_dir }}/../.claude/skills/fastapi-dapr-agent/scripts/scaffold.py \
+    --name {{ service_name }} \
+    --port {{ port }} \
+    --agents {{ agents }} \
+    --output-dir {{ output_dir }}
+  ```
+
+  **Step 2 — Initialize Dapr components on K8s (optional):**
+  ```
+  bash {{ recipe_dir }}/../.claude/skills/fastapi-dapr-agent/scripts/init_dapr.sh {{ service_name }} --namespace {{ namespace }}
+  ```
+
+  The scaffold creates:
+  - main.py with /health and /dapr/subscribe endpoints
+  - agents/<name>.py for each agent with name and instructions fields
+  - dapr/components/ with statestore.yaml and pubsub.yaml
+  - Dockerfile using Python 3.12-slim
+  - requirements.txt with pinned major versions
+
+  Rules:
+  - Always include /health and /dapr/subscribe endpoints
+  - Each agent gets its own file under agents/
+  - Dapr component YAMLs go under dapr/components/
+  - Never hardcode secrets in component YAMLs
+  - Never include business logic — templates only
+
+parameters:
+  - key: service_name
+    input_type: string
+    requirement: required
+    description: "Name of the microservice to scaffold"
+  - key: agents
+    input_type: string
+    requirement: required
+    description: "Comma-separated agent names (e.g., triage,concepts,debug)"
+  - key: port
+    input_type: string
+    requirement: optional
+    description: "FastAPI port number"
+    default: "8000"
+  - key: output_dir
+    input_type: string
+    requirement: optional
+    description: "Output directory for the scaffold"
+    default: "."
+  - key: namespace
+    input_type: string
+    requirement: optional
+    description: "Kubernetes namespace for Dapr components"
+    default: "default"
+
+extensions:
+  - type: builtin
+    name: developer

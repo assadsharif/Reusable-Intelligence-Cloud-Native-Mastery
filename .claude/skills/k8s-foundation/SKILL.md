@@ -75,9 +75,4 @@ This skill works on:
 - **Goose** — via recipe.yaml
 
 ### Goose Recipe
-```yaml
-name: k8s-foundation
-description: Check cluster health and apply Helm charts
-steps:
-  - run: python .claude/skills/k8s-foundation/scripts/check_cluster.py
-```
+See `recipes/k8s-foundation.yaml` — run with: `goose run --recipe recipes/k8s-foundation.yaml`

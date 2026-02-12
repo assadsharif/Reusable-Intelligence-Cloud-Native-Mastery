@@ -78,10 +78,4 @@ This skill works on:
 - **Goose** -- via recipe.yaml
 
 ### Goose Recipe
-```yaml
-name: nextjs-k8s-deploy
-description: Build and deploy Next.js app on Kubernetes via Minikube
-steps:
-  - run: bash .claude/skills/nextjs-k8s-deploy/scripts/build_and_deploy.sh --app-name $APP_NAME
-  - run: python .claude/skills/nextjs-k8s-deploy/scripts/verify.py --app-name $APP_NAME
-```
+See `recipes/nextjs-k8s-deploy.yaml` — run with: `goose run --recipe recipes/nextjs-k8s-deploy.yaml`

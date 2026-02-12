@@ -105,10 +105,4 @@ This skill works on:
 - **Goose** -- via recipe.yaml
 
 ### Goose Recipe
-```yaml
-name: fastapi-dapr-agent
-description: Scaffold FastAPI + Dapr microservice with OpenAI Agents SDK
-steps:
-  - run: python .claude/skills/fastapi-dapr-agent/scripts/scaffold.py --name {{service_name}} --agents {{agents}}
-  - run: bash .claude/skills/fastapi-dapr-agent/scripts/init_dapr.sh {{service_name}}
-```
+See `recipes/fastapi-dapr-agent.yaml` — run with: `goose run --recipe recipes/fastapi-dapr-agent.yaml`
